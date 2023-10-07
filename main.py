@@ -1,12 +1,10 @@
 # IMPORT MODULES
 
-import multiprocessing
-import os
+import threading
 import time
 import psutil
 import pygetwindow
 import screeninfo
-from pyinjector import inject
 
 # VARIABLES
 
@@ -14,15 +12,13 @@ robloxProcess = "Windows10Universal.exe"
 cmdProcess = "cmd.exe"
 fluxusSpam = "Fluxus"
 timeSortWindows = 30
-timeInject = 3
-timeSpamErrors = 3
+timeSpamErrors = 5
 timeCloseAll = 10800  # 3 HOUR
 
 
 # MAIN PROGRAM
 
-def starting():
-    title = """
+title = """
 
    ______    _______  _______  ___   __    _  __   __  _______    _______  _______  _______  ___       
   |    _ |  |       ||  _    ||   | |  |  | ||  | |  ||       |  |       ||       ||       ||   |      
@@ -34,10 +30,10 @@ def starting():
 
 """
 
-    print(title)
-    print()
-    print("NOW SORTING WINDOWS, CLOSING SPAM ERRORS AND CLOSING ALL INSTANCES EVERY 3 HOURS IS WORKING")
-    print()
+print(title)
+print()
+print("NOW SORTING WINDOWS, CLOSING SPAM ERRORS AND CLOSING ALL INSTANCES EVERY 3 HOURS IS WORKING")
+print()
 
 def sortWindows():
     while True:
@@ -105,14 +101,12 @@ def closeAllInstances(robloxProcess):
             continue
 
 if __name__ == '__main__':
-    processSortWindows = multiprocessing.Process(target=sortWindows)
-    processCloseCmdSpam = multiprocessing.Process(target=closeCmdSpam, args=(cmdProcess,))
-    processCloseFluxusSpam = multiprocessing.Process(target=closeFluxusSpam, args=(cmdProcess,))
-    processCloseAllInstances = multiprocessing.Process(target=closeAllInstances, args=(robloxProcess,))
+    threadSortWindows = threading.Thread(target=sortWindows)
+    threadCloseCmdSpam = threading.Thread(target=closeCmdSpam, args=(cmdProcess,))
+    threadCloseFluxusSpam = threading.Thread(target=closeFluxusSpam, args=(cmdProcess,))
+    threadCloseAllInstances = threading.Thread(target=closeAllInstances, args=(robloxProcess,))
 
-    starting()
-
-    processSortWindows.start()
-    processCloseCmdSpam.start()
-    processCloseFluxusSpam.start()
-    processCloseAllInstances.start()
+    threadSortWindows.start()
+    threadCloseCmdSpam.start()
+    threadCloseFluxusSpam.start()
+    threadCloseAllInstances.start()
